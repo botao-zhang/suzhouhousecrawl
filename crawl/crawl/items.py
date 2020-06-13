@@ -8,7 +8,19 @@
 import scrapy
 
 
-class CrawlItem(scrapy.Item):
+class HouselItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
+    id = scrapy.Field()
+    name = scrapy.Field()
+    listprice = scrapy.Field()
+    avgprice = scrapy.Field()
+    community = scrapy.Field()
+    size = scrapy.Field()
+    floor = scrapy.Field()
+    totalfloor = scrapy.Field()
+    onboarddate = scrapy.Field()
+    category = scrapy.Field()
+    downpayment = scrapy.Field()
+    monthlypayment = scrapy.Field()
+    monthlypaymentH = scrapy.Field()
     pass
