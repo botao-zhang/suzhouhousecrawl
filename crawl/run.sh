@@ -10,3 +10,4 @@ for ((page=$from; page<=$to; page++)); do
   echo "crawing page $page"
   scrapy crawl lj -o out_$page.csv -t csv -a page=$page >run_$page.log 2>&1;
 done
+bash ./combine.sh $from $to

@@ -84,7 +84,7 @@ def calcCommunityPrice(house):
     if house['hasservice'] == 0:
         p -= 2000
 
-    p += (house['builtyear'] - 2000) * 100
+    p += (house['builtyear'] - 2005) * 100
 
     return p
 
@@ -93,10 +93,10 @@ def calcHousePrice(house):
     if house['isvilla'] == 1:
         p += 5000
     if house['istopfloor'] == 1:
-        if house['recognizedsize' != house['size']]:
-            p += (house['areaprice'] + house['communityprice']) * house['recognizedsize'] / house['size'] / 2
+        if house['recognizedsize'] != house['size']:
+            p += (house['areaprice'] + house['communityprice']) * (house['size'] - house['recognizedsize']) / house['size'] / 2
         else:
-            p += 3000
+            p += (house['areaprice'] + house['communityprice']) * 0.1
     if house['balconynum'] >= 1:
         p += 1000
     if house['gardennum'] >= 1:
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     pd.options.display.max_columns = None
 
     print("reading raw")
-    data = pd.read_csv("./crawl/final_out.csv")
+    data = pd.read_csv("./his/6_27/final_out.csv")
     print(data.shape)
 
     print("appending special")
@@ -138,6 +138,7 @@ if __name__ == '__main__':
     print("cleaning data")
     clean(data,house)
     #data = data.loc[data['id'].isin(['107102402966', '107102664327','107102657257','107101517032'])] #兰亭苑 and 闻钟苑 and 唐家巷42 and 华阳花苑
+    #data = data.loc[data['id'].isin(['999999999999'])] #兰亭苑 and 闻钟苑 and 唐家巷42 and 华阳花苑
     print("preparing data")
     data = data.merge(community, how="left", left_on="community", right_on="cname")
     data = data.merge(house, how="left", on="id")

@@ -4,3 +4,4 @@ __pycache__
 *.html
 crawl/*.csv
 *.log
+.DS_Store
