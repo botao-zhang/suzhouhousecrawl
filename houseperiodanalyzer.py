@@ -41,13 +41,23 @@ if __name__ == '__main__':
     top = data_both.groupby(['istopfloor'])['delta', 'listprice_x'].sum()
     print(top)
 
+    print("change per location")
+    innerring = data_both.groupby(['isinnerring'])['delta', 'listprice_x'].sum()
+    print(innerring)
+
+    oldcity = data_both.groupby(['isoldcity'])['delta', 'listprice_x'].sum()
+    print(oldcity)
+
+    famous = data_both.groupby(['isfamousarea'])['delta', 'listprice_x'].sum()
+    print(famous)
+
     all = '{:.2%}'.format(data_both['delta'].sum() / data_both['listprice_x'].sum())
     print("overall changes")
     print(all)
 
     print("increase most")
     final_df = data_both.sort_values(by=['delta'], ascending=False)
-    print(final_df.head(n=3)[['name','delta']])
+    print(final_df.head(n=3)[['name','delta','listprice_y', 'bottomprice']])
 
     print("decrease most")
     final_df = data_both.sort_values(by=['delta'], ascending=True)
