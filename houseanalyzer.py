@@ -15,6 +15,8 @@ def prepare(data):
     data['builtyear'] = data['builtyear'].fillna(value=2000)
     data['additionalfloor'] = data['additionalfloor'].fillna(value=0)
     data['garage'] = data['garage'].fillna(value=0)
+    data['pschool'] = data['pschool'].fillna(value=0)
+    data['mschool'] = data['mschool'].fillna(value=0)
     data.loc[data['isinnerring'].isna(), 'isinnerring'] = data.loc[data['isinnerring'].isna()].apply(lambda o: isInInnerRing(o), axis=1)
     data.loc[data['isoldcity'].isna(), 'isoldcity'] = data.loc[data['isoldcity'].isna()].apply(lambda o: isInOldCity(o), axis=1)
     data.loc[data['isfamousarea'].isna(), 'isfamousarea'] = data.loc[data['isfamousarea'].isna()].apply(lambda o: isAreaGreat(o), axis=1)
@@ -47,9 +49,8 @@ def isAreaGreat(house):
 def isVilla(house):
     if house['category'] == '别墅' or house['totalfloornum'] <= 2:
         return 1
-    if '别墅' in house['name'] and house['totalfloornum'] <= 4:
+    if ('别墅' in house['name'] or '双拼' in house['name'] or '联排' in house['name']) and house['totalfloornum'] <= 4:
         return 1
-
     return 0
 
 def isTopFloor(house):
@@ -84,7 +85,10 @@ def calcCommunityPrice(house):
     if house['hasservice'] == 0:
         p -= 2000
 
-    p += (house['builtyear'] - 2005) * 100
+    p += int((house['builtyear'] - 2005) / 3) * 1000
+
+    p += house['pschool'] * 1000
+    p += house['mschool'] * 500
 
     return p
 
@@ -92,21 +96,25 @@ def calcHousePrice(house):
     p = 0
     if house['isvilla'] == 1:
         p += 5000
+
+    if house['isvilla'] == 0:
+        if house['floor'] == '低':
+            p += 500
+        if house['floor'] == '高':
+            p += (4 - house['totalfloornum'] - house['additionalfloor']) * 1000
+
     if house['istopfloor'] == 1:
         if house['recognizedsize'] != house['size']:
             p += (house['areaprice'] + house['communityprice']) * (house['size'] - house['recognizedsize']) / house['size'] / 2
         else:
             p += (house['areaprice'] + house['communityprice']) * 0.1
+
     if house['balconynum'] >= 1:
         p += 1000
     if house['gardennum'] >= 1:
         p += 1000
     p += (house['balconysize'] + house['gardensize']) / 20 * 1000
-    if house['isvilla'] == 0:
-        if house['floor'] == '低':
-            p += 500
-        if house['floor'] == '高':
-            p += (3 - house['totalfloornum'] - house['additionalfloor']) * 1000
+
     return p
 
 def calcBottomPrice(house):
@@ -152,16 +160,15 @@ if __name__ == '__main__':
 
     data.to_csv("analyzed_result.csv")
     print("calculating worthy ones")
-    worthy = data.loc[data['bottomprice'] + 100 >= data['listprice']]
+    worthy = data.loc[data['bottomprice'] + 70 >= data['listprice']]
     worthy.to_csv("analyzed_worthy_result.csv")
 
     print("calculating recommended ones")
     recommended = worthy.loc[worthy['totalfloornum'] <= 4]
     recommended = recommended.loc[recommended['listprice'] <= 1500]
     recommended = recommended.loc[recommended['isinnerring'] == 1]
-    recommended = recommended.loc[recommended['isoldcity'] == 1]
     recommended = recommended.loc[recommended['recognizedsize'] >= 90]
     recommended = recommended.loc[recommended['hasservice'] == 1]
-    recommended = recommended.loc[recommended['balconysize'] + recommended['gardensize'] >= 20]
+    recommended = recommended.loc[recommended['balconysize'] + recommended['gardensize'] >= 10]
     print(recommended.shape)
     recommended.to_csv("analyzed_recommended_result.csv")

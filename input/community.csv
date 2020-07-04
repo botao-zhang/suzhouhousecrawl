@@ -1,6 +1,7 @@
-cname,builtyear,additionalfloor,hasservice,isinnerring,isoldcity,isfamousarea
-兰亭苑,2004,0,1,1,1,1
-华阳花苑,2001,0,1,1,1,1
-蕴秀园,2000,1,1,1,1,1
+cname,builtyear,additionalfloor,hasservice,isinnerring,isoldcity,isfamousarea,pschool,mschool
+兰亭苑,2004,0,1,1,1,1,2,0
+华阳花苑,2001,0,1,1,1,1,1,0
+蕴秀园,2000,1,1,1,1,1,2,0
+桃坞小筑,2009,0,1,1,1,1,1,0
 
 

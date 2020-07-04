@@ -8,7 +8,7 @@ if __name__ == '__main__':
     pd.set_option('display.max_columns', 500)
 
     data_from = pd.read_csv("./his/6_13/analyzed_result.csv")
-    data_to = pd.read_csv("./his/6_27/analyzed_result.csv")
+    data_to = pd.read_csv("./his/7_4/analyzed_result.csv")
 
     data_to = data_to[["id","listprice"]]
     data = data_from.merge(data_to,how="outer",on="id")
