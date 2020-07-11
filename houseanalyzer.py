@@ -132,7 +132,7 @@ if __name__ == '__main__':
     pd.options.display.max_columns = None
 
     print("reading raw")
-    data = pd.read_csv("./his/7_4/final_out.csv")
+    data = pd.read_csv("./his/7_11/final_out.csv")
     print(data.shape)
 
     print("appending special")
@@ -164,11 +164,11 @@ if __name__ == '__main__':
     worthy.to_csv("analyzed_worthy_result.csv")
 
     print("calculating recommended ones")
-    recommended = worthy.loc[worthy['totalfloornum'] <= 4]
+    recommended = worthy.loc[worthy['totalfloornum'] + worthy['additionalfloor'] <= 4]
     recommended = recommended.loc[recommended['listprice'] <= 1500]
     recommended = recommended.loc[recommended['isinnerring'] == 1]
     recommended = recommended.loc[recommended['recognizedsize'] >= 90]
-    recommended = recommended.loc[recommended['hasservice'] == 1]
+    #recommended = recommended.loc[recommended['hasservice'] == 1]
     recommended = recommended.loc[recommended['balconysize'] + recommended['gardensize'] >= 10]
     print(recommended.shape)
     recommended.to_csv("analyzed_recommended_result.csv")
