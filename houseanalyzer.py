@@ -132,7 +132,7 @@ if __name__ == '__main__':
     pd.options.display.max_columns = None
 
     print("reading raw")
-    data = pd.read_csv("./his/7_11/final_out.csv")
+    data = pd.read_csv("./his/7_18/final_out.csv")
     print(data.shape)
 
     print("appending special")
