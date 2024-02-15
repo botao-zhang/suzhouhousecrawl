@@ -1,2 +1,2 @@
-Scrapy==2.1.0
+Scrapy==2.11.1
 pandas==1.0.4
